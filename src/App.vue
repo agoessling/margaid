@@ -2,8 +2,8 @@
 <div id="app" class="row-container">
   <div id="toolbar">Toolbar</div>
   <div id="center" class="col-container">
-    <div id="sidebar">Sidebar</div>
     <div id="main"><Sheet></Sheet></div>
+    <div id="sidebar">Sidebar</div>
   </div>
   <div id="footer">Footer</div>
 </div>
@@ -20,9 +20,6 @@ export default Vue.extend({
   components: {
     Sheet,
   },
-
-  data: () => ({
-  }),
 });
 </script>
 
@@ -53,7 +50,7 @@ html, body, #app {
   width: 200px;
   min-width: 200px;
   border-style: solid;
-  border-width: 0 1px 0 0;
+  border-width: 0 0 0 1px;
   border-color: #babdbe;
   background-color: #eceff1;
 }

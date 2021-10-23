@@ -1,6 +1,6 @@
 import Paper from 'paper';
 
-import Command from './Command';
+import LineCommand from './LineCommand';
 import CommandManager from './CommandManager';
 import Grid from './Grid';
 import PanZoom from './PanZoom';
@@ -13,7 +13,7 @@ class Sheet {
     this.paper.setup(this.canvas);
 
     this.grid = new Grid(this.paper);
-    this.command = new Command(this.paper, this.canvas, this.grid);
+    this.command = new LineCommand(this.paper, this.canvas, this.grid);
     this.manager = new CommandManager();
     this.panZoom = new PanZoom(this.paper, this.canvas, () => this.onViewChange());
 
