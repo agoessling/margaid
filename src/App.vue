@@ -1,24 +1,26 @@
 <template>
-<div id="app" class="row-container">
-  <div id="toolbar">Toolbar</div>
+<v-app id="app" class="row-container">
+  <Toolbar/>
   <div id="center" class="col-container">
     <div id="main"><Sheet></Sheet></div>
     <div id="sidebar">Sidebar</div>
   </div>
   <div id="footer">Footer</div>
-</div>
+</v-app>
 </template>
 
 <script lang="js">
 import Vue from 'vue';
 
 import Sheet from './components/Sheet.vue';
+import Toolbar from './components/Toolbar.vue';
 
 export default Vue.extend({
   name: 'App',
 
   components: {
     Sheet,
+    Toolbar,
   },
 });
 </script>
