@@ -25,25 +25,46 @@
       <v-icon color="grey darken-2" class="toolbutton-icon">mdi-printer</v-icon>
     </v-btn>
     <v-divider inset vertical class="tooldivider"/>
-    <v-btn text class="toolbutton">
-      <v-icon color="grey darken-2" class="toolbutton-icon">mdi-cursor-default</v-icon>
-    </v-btn>
-    <v-btn text class="toolbutton">
-      <v-icon color="grey darken-2" class="toolbutton-icon">mdi-vector-polyline</v-icon>
-    </v-btn>
+    <v-btn-toggle :value=currentCommand @change=commandButtonClick mandatory group color="primary">
+      <v-btn value="select" text class="toolbutton">
+        <v-icon class="toolbutton-icon">mdi-cursor-default</v-icon>
+      </v-btn>
+      <v-btn value="line" text class="toolbutton">
+        <v-icon class="toolbutton-icon">mdi-vector-polyline</v-icon>
+      </v-btn>
+    </v-btn-toggle>
     <v-divider vertical class="tooldivider"/>
+    <ColorPickerButton v-model=lineColor icon="mdi-border-color"/>
   </div>
 </div>
 </template>
 
 <script>
 import FileMenu from './FileMenu.vue';
+import ColorPickerButton from './ColorPickerButton.vue';
 
 export default {
   name: 'Toolbar',
 
   components: {
+    ColorPickerButton,
     FileMenu,
+  },
+
+  methods: {
+    commandButtonClick(value) {
+      this.$store.commit('setCurrentCommand', value);
+    },
+  },
+
+  data: () => ({
+    lineColor: '#000000FF',
+  }),
+
+  computed: {
+    currentCommand() {
+      return this.$store.state.currentCommand;
+    },
   },
 };
 </script>
@@ -73,6 +94,7 @@ export default {
 }
 
 .toolbutton {
+  border-radius: 4px !important;
   padding: 0 !important;
   margin: 5px 6px 5px 0 !important;
   min-width: 24px !important;
