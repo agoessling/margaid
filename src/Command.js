@@ -43,16 +43,28 @@ class Command {
     if (this.onDoubleClick) this.onDoubleClick(event);
   }
 
+  static undo() {
+  }
+
+  static redo() {
+  }
+
+  setCursor(cursor) {
+    this.canvas.style.cursor = cursor;
+  }
+
   activate() {
     this.addListeners();
   }
 
   abort() {
     this.removeListeners();
+    this.setCursor('default');
   }
 
   finalize() {
     this.removeListeners();
+    this.setCursor('default');
     if (this.onDone) this.onDone(this);
   }
 

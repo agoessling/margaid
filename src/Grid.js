@@ -25,7 +25,9 @@ class Grid {
     this.paper = paper;
     this.minorGroup = new Paper.Group();
     this.majorGroup = new Paper.Group();
-    this.gridGroup = new Paper.Group();
+    this.gridLayer = new Paper.Layer({ name: 'grid' });
+    this.gridLayer.addChildren([this.minorGroup, this.majorGroup]);
+    this.gridLayer.sendToBack();
   }
 
   nearest(point) {

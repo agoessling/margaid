@@ -11,7 +11,8 @@ export default {
   mounted() {
     const { canvas } = this.$refs;
 
-    const sheet = new Sheet(canvas);
+    const sheet = new Sheet(this.$store, canvas);
+    this.$store.dispatch('setActiveSheet', sheet);
 
     window.addEventListener('resize', () => { sheet.resize(); });
   },

@@ -1,19 +1,22 @@
 import Paper from 'paper';
 
 import LineCommand from './LineCommand';
+import SelectCommand from './SelectCommand';
 import CommandManager from './CommandManager';
 import Grid from './Grid';
 import PanZoom from './PanZoom';
 
 class Sheet {
-  constructor(canvas) {
+  constructor(store, canvas) {
+    this.store = store;
     this.canvas = canvas;
 
     this.paper = new Paper.PaperScope();
     this.paper.setup(this.canvas);
 
+    this.drawingLayer = new Paper.Layer({ name: 'drawing' });
+
     this.grid = new Grid(this.paper);
-    this.command = new LineCommand(this.paper, this.canvas, this.grid);
     this.manager = new CommandManager();
     this.panZoom = new PanZoom(this.paper, this.canvas, () => this.onViewChange());
 
@@ -26,7 +29,26 @@ class Sheet {
     });
 
     this.resize();
-    this.manager.setCommand(this.command);
+
+    this.drawingLayer.activate();
+    this.activateTool('select');
+  }
+
+  activateTool(tool) {
+    let command = null;
+    switch (tool) {
+      case 'select':
+        command = new SelectCommand(this.paper, this.canvas, this.grid);
+        break;
+      case 'line':
+        command = new LineCommand(this.paper, this.canvas, this.grid);
+        break;
+      default:
+        return;
+    }
+
+    this.manager.setCommand(command);
+    console.log(this.paper);
   }
 
   onViewChange() {

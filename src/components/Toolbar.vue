@@ -25,7 +25,7 @@
       <v-icon color="grey darken-2" class="toolbutton-icon">mdi-printer</v-icon>
     </v-btn>
     <v-divider inset vertical class="tooldivider"/>
-    <v-btn-toggle :value=currentCommand @change=commandButtonClick mandatory group color="primary">
+    <v-btn-toggle :value=currentTool @change=toolButtonClick mandatory group color="primary">
       <v-btn value="select" text class="toolbutton">
         <v-icon class="toolbutton-icon">mdi-cursor-default</v-icon>
       </v-btn>
@@ -34,36 +34,35 @@
       </v-btn>
     </v-btn-toggle>
     <v-divider vertical class="tooldivider"/>
-    <ColorPickerButton v-model=lineColor icon="mdi-border-color"/>
+    <ToolOptionBar tool-type=line />
   </div>
 </div>
 </template>
 
 <script>
 import FileMenu from './FileMenu.vue';
-import ColorPickerButton from './ColorPickerButton.vue';
+import ToolOptionBar from './ToolOptionBar.vue';
 
 export default {
   name: 'Toolbar',
 
   components: {
-    ColorPickerButton,
     FileMenu,
+    ToolOptionBar,
   },
 
   methods: {
-    commandButtonClick(value) {
-      this.$store.commit('setCurrentCommand', value);
+    toolButtonClick(value) {
+      this.$store.dispatch('setActiveTool', value);
     },
   },
 
   data: () => ({
-    lineColor: '#000000FF',
   }),
 
   computed: {
-    currentCommand() {
-      return this.$store.state.currentCommand;
+    currentTool() {
+      return this.$store.state.activeTool;
     },
   },
 };

@@ -24,6 +24,7 @@ class LineCommand extends Command {
   }
 
   activate() {
+    this.setCursor('crosshair');
     this.path.removeSegments();
     this.paper.project.activeLayer.addChild(this.path);
     super.activate();
