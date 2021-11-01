@@ -3,16 +3,19 @@ import Paper from 'paper';
 import Command from './Command';
 
 class LineCommand extends Command {
-  constructor(paper, canvas, grid) {
-    super(paper, canvas, grid);
+  constructor(store, paper, canvas, grid) {
+    super(store, paper, canvas, grid);
 
     this.manhattanDir = 'vertical';
+    this.styleUnwatch = null;
+
     this.path = new Paper.Path({ insert: false });
-    this.path.strokeColor = 'black';
+    this.path.strokeCap = 'round';
+    this.path.strokeJoin = 'round';
   }
 
   clone() {
-    return new LineCommand(this.paper, this.canvas, this.grid);
+    return new LineCommand(this.store, this.paper, this.canvas, this.grid);
   }
 
   undo() {
@@ -25,18 +28,28 @@ class LineCommand extends Command {
 
   activate() {
     this.setCursor('crosshair');
+
     this.path.removeSegments();
     this.paper.project.activeLayer.addChild(this.path);
+
+    this.styleUnwatch = this.store.watch(
+      (state) => state.styles.line,
+      this.onStyleChange.bind(this),
+      { deep: true, immediate: true },
+    );
+
     super.activate();
   }
 
   abort() {
     super.abort();
     this.path.remove();
+    if (this.styleUnwatch) this.styleUnwatch();
   }
 
   finalize() {
     this.path.reduce();
+    if (this.styleUnwatch) this.styleUnwatch();
     super.finalize();
   }
 
@@ -100,6 +113,14 @@ class LineCommand extends Command {
       }
       this.updateLeader();
     }
+  }
+
+  onStyleChange(...args) {
+    this.setStyle(args[args.length - 1]);
+  }
+
+  setStyle(style) {
+    Object.assign(this.path, style);
   }
 
   swapLeaderStyle() {

@@ -6,8 +6,16 @@ import CommandManager from './CommandManager';
 import Grid from './Grid';
 import PanZoom from './PanZoom';
 
+let activeSheet = null;
+
+function getActiveSheet() {
+  return activeSheet;
+}
+
 class Sheet {
   constructor(store, canvas) {
+    activeSheet = this;
+
     this.store = store;
     this.canvas = canvas;
 
@@ -38,17 +46,16 @@ class Sheet {
     let command = null;
     switch (tool) {
       case 'select':
-        command = new SelectCommand(this.paper, this.canvas, this.grid);
+        command = new SelectCommand(this.store, this.paper, this.canvas, this.grid);
         break;
       case 'line':
-        command = new LineCommand(this.paper, this.canvas, this.grid);
+        command = new LineCommand(this.store, this.paper, this.canvas, this.grid);
         break;
       default:
         return;
     }
 
     this.manager.setCommand(command);
-    console.log(this.paper);
   }
 
   onViewChange() {
@@ -62,4 +69,4 @@ class Sheet {
   }
 }
 
-export default Sheet;
+export { getActiveSheet, Sheet };

@@ -1,5 +1,6 @@
 class Command {
-  constructor(paper, canvas, grid) {
+  constructor(store, paper, canvas, grid) {
+    this.store = store;
     this.paper = paper;
     this.canvas = canvas;
     this.grid = grid;

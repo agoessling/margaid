@@ -3,7 +3,7 @@
 </template>
 
 <script lang="js">
-import Sheet from '../Sheet';
+import { Sheet } from '../Sheet';
 
 export default {
   name: 'Sheet',
@@ -12,7 +12,6 @@ export default {
     const { canvas } = this.$refs;
 
     const sheet = new Sheet(this.$store, canvas);
-    this.$store.dispatch('setActiveSheet', sheet);
 
     window.addEventListener('resize', () => { sheet.resize(); });
   },

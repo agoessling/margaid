@@ -1,10 +1,17 @@
 import Vuex from 'vuex';
 
+import { getActiveSheet } from './Sheet';
+
 function getStore() {
   return new Vuex.Store({
     state: {
       activeTool: 'select',
-      activeSheet: null,
+      styles: {
+        line: {
+          strokeColor: '#000000FF',
+          fillColor: '#FFFFFF00',
+        },
+      },
     },
 
     mutations: {
@@ -12,21 +19,21 @@ function getStore() {
         state.activeTool = tool;
       },
 
-      SET_ACTIVE_SHEET(state, sheet) {
-        state.activeSheet = sheet;
+      SET_STYLES_LINE_STROKE_COLOR(state, color) {
+        state.styles.line.strokeColor = color;
+      },
+
+      SET_STYLES_LINE_FILL_COLOR(state, color) {
+        state.styles.line.fillColor = color;
       },
     },
 
     actions: {
-      setActiveTool({ state, commit }, tool) {
+      setActiveTool({ commit }, tool) {
         commit('SET_ACTIVE_TOOL', tool);
 
-        const sheet = state.activeSheet;
+        const sheet = getActiveSheet();
         sheet.activateTool(tool);
-      },
-
-      setActiveSheet({ commit }, sheet) {
-        commit('SET_ACTIVE_SHEET', sheet);
       },
     },
   });
