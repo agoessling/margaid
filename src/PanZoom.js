@@ -24,6 +24,9 @@ class PanZoom {
       return;
     }
 
+    // Save current cursor style to restore on mouse up.
+    this.lastCursor = this.canvas.style.cursor;
+
     // Capture drag start location in view and project coordinates.
     this.dragPointView = new Paper.Point([event.offsetX, event.offsetY]);
     this.dragPointProject = this.paper.view.viewToProject(this.dragPointView);
@@ -49,7 +52,7 @@ class PanZoom {
     }
     this.moved = true;
 
-    document.body.style.cursor = 'move';
+    this.canvas.style.cursor = 'move';
 
     // Translate the view so the original drag point is beneath cursor.
     this.paper.view.translate(cursorPointProject.subtract(this.dragPointProject));
@@ -66,7 +69,8 @@ class PanZoom {
     }
     event.stopPropagation(); // Needed to avoid multiple calls due to window event listener.
 
-    document.body.style.cursor = 'default';
+    // Restore cursor to whatever it was before the drag.
+    this.canvas.style.cursor = this.lastCursor;
 
     // Only emit right click if there was no drag.
     if (!this.moved) {
